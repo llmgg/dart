@@ -1,4 +1,4 @@
 # DART
-DART is short for Distributed Agent Run Time.
 
+DART is short for Distributed Agent Run Time
 
