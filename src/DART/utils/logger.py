@@ -71,6 +71,12 @@ def setup_main_logger(file=True, console=True, path: Optional[str] = None):
     Configures logging for the main application.
     Allows separate configurations for file and console logging.
     """
+    # Check environment variable to disable file logging
+    disable_file_logging = os.getenv('DART_LOG_FILE', '').lower() in ('false', '0', 'no')
+
+    if disable_file_logging:
+        file = False
+
     config_name = "none"
     if file and console:
         config_name = "file_console"
@@ -81,7 +87,7 @@ def setup_main_logger(file=True, console=True, path: Optional[str] = None):
 
     log_config = LOGGING_CONFIGS[config_name]
 
-    if path:
+    if path and file:
         expanded_path = os.path.expanduser(path)
         os.makedirs(os.path.dirname(expanded_path), exist_ok=True)
         log_config["handlers"]["sys_rotating"]["filename"] = f"{expanded_path}.sys.log"
